@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <header>
+        <h1>My Tasks</h1>
+        <p>{{ date_display }}</p>
+    </header>
+    <form method="POST" action="">
+        {% csrf_token %}
+    <div class="input-group">
+        <input type="text"  id="todo-input" placeholder="Add a new task..."  name="task_name"> 
+        <button class="add-btn"><i class="fas fa-plus"></i></button>
+    </div>
+    </form>
+    <ul class="todo-list">
+        {% for task in initial_tasks %}
+        <li class="todo-item">
+            <label>
+                <a href="{% url 'checked_task' task.id %}">
+                    {%if task.completed %}
+                    <i class="fa-solid fa-square-check" style = "margin-right: 7px"></i>
+                    {%else%}
+                    <i class="fa-regular fa-square-check" style = "margin-right: 7px"></i>
+                    {%endif%}
+                </a>
+                <span class="text">{{ task.task }}</span>
+            </label>
+            <a href="{% url 'delete_task' task.id %}">
+                <button class="delete-btn"><i class="fas fa-trash"></i></button>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <div class="footer">
+        <span id="task-count">{{ initial_tasks|length  }} tasks total</span>
+        <div>
+            <a href="/admin" class="nav-link">Admin</a>
+            <a href="/posts" class="nav-link">Stats</a>
+            <a href="/about" class="nav-link">About</a>
+        </div>
+    </div>
+{% endblock %}
